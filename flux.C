@@ -56,8 +56,10 @@ void flux(){
     double a0E = conversion*cyric_fit->GetParError(0);
     double a1 = conversion*cyric_fit->GetParameter(1);
     double a1E = conversion*cyric_fit->GetParError(1);
+
     double half_life = 2.7*24.0; // hours
     double lifetime = half_life/TMath::Log(2.0); // hours
+    double irradiation_time = 12.0; // hours
     double time_elapsed = 3.0; // hours
 
     // 197Au + n -> 198Au e.s. -> 198Au g.s. + gamma (411keV)
@@ -72,27 +74,20 @@ void flux(){
 
     cout << "Expected gamma radiation of Au-198: " << gamma_radiation << " +- " << gamma_radiationE << " Bq" << endl;
 
-    double n_0 = lifetime * gamma_radiation * TMath::Exp(time_elapsed/lifetime);
-    double n_0E = lifetime * gamma_radiationE * TMath::Exp(time_elapsed/lifetime);
-
-    cout << "Estimated number N(0) of Au-198 produced on film by n-irradiation: " << n_0 << " +- " << n_0E << endl;
-
-    double cross_section_barn = 100.0; // b at energy En
-    double cross_section = cross_section_barn*TMath::Power(10.,-28); // m^2
-
     cout << "===========================================================" << endl;
-    cout << "Assume monochromatic neutron at energy XX; cross section = " << cross_section << " m^2" << endl;
+    cout << "Assuming a monochromatic neutron of energy En = 1eV" << endl;
 
-    double au_density = 19.32*TMath::Power(10.,6); // m^-3
-    double au_thickness = 0.2*TMath::Power(10.,-3); // m
-    double n_on_film = n_0/(cross_section*au_density*au_thickness);
-    double n_on_filmE = n_0E/(cross_section*au_density*au_thickness);
+    double cross_section_b = 100.0; // b
+    double cross_section = cross_section_b*TMath::Power(10.,-28);
 
-    cout << "Estimated number of neutrons that penetrated the film in total: " << n_on_film << " +- " << n_on_filmE << endl;
+    double time_factor = ( 1.0 - TMath::Exp(-(irradiation_time/lifetime)) ) * TMath::Exp(-(time_elapsed/lifetime));
 
-    double irradiation_time = 12.0*60.0*60.0; // seconds
+    double n_flux = gamma_radiation/(cross_section*time_factor); // /s/m^2
+    double n_fluxE = gamma_radiationE/(cross_section*time_factor); // /s/m^2
 
-    cout << "Neutron flux at distance " << distance << " m = " << n_on_film/irradiation_time << " +- " << n_on_filmE/irradiation_time << " /s/cm^2" << endl;
+    cout << "Neutron flux at distance " << distance << " m: " << n_flux << " +- " << n_fluxE << " /s/m^2" << endl;
+
+    cout << "Number of neutrons stopped: " << cross_section*n_flux << " +- " << cross_section*n_fluxE << endl;
 
 
 }
