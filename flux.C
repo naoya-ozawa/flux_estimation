@@ -1,5 +1,5 @@
 void flux(){
-    double distance = 10.0; // m
+    double distance = 5.0; // m
 
     TCanvas *c1 = new TCanvas();
 
@@ -54,8 +54,6 @@ void flux(){
  
     double a0 = conversion*cyric_fit->GetParameter(0);
     double a0E = conversion*cyric_fit->GetParError(0);
-    double a1 = conversion*cyric_fit->GetParameter(1);
-    double a1E = conversion*cyric_fit->GetParError(1);
 
     double half_life = 2.7*24.0; // hours
     double lifetime = half_life/TMath::Log(2.0); // hours
@@ -69,15 +67,15 @@ void flux(){
 
     cout << "Lifetime of Au-198 = " << lifetime << " hours." << endl;
 
-    double gamma_radiation = a0/(distance*distance) + a1; // Bq
-    double gamma_radiationE = TMath::Sqrt( (a0E*a0E)/(distance*distance*distance*distance) + (a1E*a1E) ); // Bq
+    double gamma_radiation = a0/(distance*distance); // Bq
+    double gamma_radiationE = a0E/(distance*distance); // Bq
 
     cout << "Expected gamma radiation of Au-198: " << gamma_radiation << " +- " << gamma_radiationE << " Bq" << endl;
 
     cout << "===========================================================" << endl;
-    cout << "Assuming a monochromatic neutron of energy En = 1eV" << endl;
+    cout << "Assuming a monochromatic neutron of energy En = 1MeV" << endl;
 
-    double cross_section_b = 100.0; // b
+    double cross_section_b = 0.1; // b
     double cross_section = cross_section_b*TMath::Power(10.,-28);
 
     double time_factor = ( 1.0 - TMath::Exp(-(irradiation_time/lifetime)) ) * TMath::Exp(-(time_elapsed/lifetime));
@@ -87,7 +85,7 @@ void flux(){
 
     cout << "Neutron flux at distance " << distance << " m: " << n_flux << " +- " << n_fluxE << " /s/m^2" << endl;
 
-    cout << "Number of neutrons stopped: " << cross_section*n_flux << " +- " << cross_section*n_fluxE << endl;
+    cout << "Number of neutrons hitting 197-Au: " << cross_section*n_flux << " +- " << cross_section*n_fluxE << endl;
 
 
 }
