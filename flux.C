@@ -73,9 +73,9 @@ void flux(){
     cout << "Expected gamma radiation of Au-198: " << gamma_radiation << " +- " << gamma_radiationE << " Bq" << endl;
 
     cout << "===========================================================" << endl;
-    cout << "Assuming a monochromatic neutron of energy En = 1MeV" << endl;
+    cout << "Assuming a monochromatic neutron of energy En = 1eV" << endl;
 
-    double cross_section_b = 0.1; // b
+    double cross_section_b = 100.; // b
     double cross_section = cross_section_b*TMath::Power(10.,-28);
 
     double time_factor = ( 1.0 - TMath::Exp(-(irradiation_time/lifetime)) ) * TMath::Exp(-(time_elapsed/lifetime));
@@ -91,7 +91,7 @@ void flux(){
 
     cout << "Neutron flux at distance " << distance << " m: " << n_flux << " +- " << n_fluxE << " /s/m^2" << endl;
 
-    cout << "Number of neutrons that hit the 197-Au during the irradiation: " << cross_section*n_flux*irradiation_time*60.*60. << " +- " << cross_section*n_fluxE*irradiation_time*60.*60. << endl;
+    cout << "Number of neutrons that penetrated the Au film: " << n_flux*(Au_volume/0.02)*TMath::Power(10.,-4) << " +- " << n_fluxE*(Au_volume/0.02)*TMath::Power(10.,-4) << " /s" << endl;
 
 
 }
