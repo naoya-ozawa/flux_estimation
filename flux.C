@@ -80,12 +80,18 @@ void flux(){
 
     double time_factor = ( 1.0 - TMath::Exp(-(irradiation_time/lifetime)) ) * TMath::Exp(-(time_elapsed/lifetime));
 
-    double n_flux = gamma_radiation/(cross_section*time_factor); // /s/m^2
-    double n_fluxE = gamma_radiationE/(cross_section*time_factor); // /s/m^2
+    double Au_ram = 197.0; // g/mol
+    double Na = 6.0*TMath::Power(10.,23); // /mol
+    double Au_density = 19.32; // g/cm^3
+    double Au_volume = 1.0*1.0*0.02; // cm^3
+    double N_Au = Na * (1.0/Au_ram) * Au_density * Au_volume; // number of Au atoms
+
+    double n_flux = gamma_radiation/(cross_section*time_factor*N_Au); // /s/m^2
+    double n_fluxE = gamma_radiationE/(cross_section*time_factor*N_Au); // /s/m^2
 
     cout << "Neutron flux at distance " << distance << " m: " << n_flux << " +- " << n_fluxE << " /s/m^2" << endl;
 
-    cout << "Number of neutrons hitting 197-Au: " << cross_section*n_flux << " +- " << cross_section*n_fluxE << endl;
+    cout << "Number of neutrons that hit the 197-Au during the irradiation: " << cross_section*n_flux*irradiation_time*60.*60. << " +- " << cross_section*n_fluxE*irradiation_time*60.*60. << endl;
 
 
 }
