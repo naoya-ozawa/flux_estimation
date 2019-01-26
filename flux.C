@@ -1,5 +1,5 @@
 void flux(){
-    double distance = 5.0; // m
+    double distance = 3.5; // m
 
     TCanvas *c1 = new TCanvas();
 
@@ -73,9 +73,9 @@ void flux(){
     cout << "Expected gamma radiation of Au-198: " << gamma_radiation << " +- " << gamma_radiationE << " Bq" << endl;
 
     cout << "===========================================================" << endl;
-    cout << "Assuming a monochromatic neutron of energy En = 1eV" << endl;
+    cout << "Assuming a monochromatic neutron of energy En = 1MeV" << endl;
 
-    double cross_section_b = 100.; // b
+    double cross_section_b = 0.1; // b
     double cross_section = cross_section_b*TMath::Power(10.,-28);
 
     double time_factor = ( 1.0 - TMath::Exp(-(irradiation_time/lifetime)) ) * TMath::Exp(-(time_elapsed/lifetime));
