@@ -24,7 +24,7 @@ double N_ex(double *x, double *par){
 
     double num = 0.;
     if (x[0] <= par0){
-        num = par1*(1.0 - TMath::Exp(-par2*x[0]));
+        num = par1*(1.0 - TMath::Exp(-x[0]/par2));
     }else{
         num = par3*TMath::Exp(-(x[0]-par4)/par5);
     }
@@ -168,17 +168,18 @@ int main (int argc, char** argv){
     double damp_factor = 1.0 - TMath::Exp(-cross_section*N_197Au*T);
     double time_factor = (1.0 - TMath::Exp(-t_0/tau_l)) * TMath::Exp(-(t_1-t_0)/tau_l);
 
-    double alpha = radiation * tau_l*60.*60. / (N_0*damp_factor*time_factor);
-    double alphaE = radiationE * tau_l*60.*60. / (N_0*damp_factor*time_factor);
+    double factor_A = radiation / time_factor;
+    double factor_AE = radiationE / time_factor;
 
-    cout << "Parameter alpha = " << alpha << " +- " << alphaE << endl;
-
-    double n_flux = alpha*N_0/(tau_l*60.*60.*damp_factor);
-    double n_fluxE = alphaE*N_0/(tau_l*60.*60.*damp_factor);
+    double n_flux = factor_A / damp_factor;
+    double n_fluxE = factor_AE / damp_factor;
 
     cout << "Expected neutron flux: " << n_flux << " +- " << n_fluxE << " /cm^2/s" << endl;
 
-    cout << "Expected neutron capture in gold foil: " << n_flux*damp_factor << " +- " << n_fluxE*damp_factor << " /cm^2/s" << endl;
+    double capture_rate = n_flux * damp_factor;
+    double capture_rateE = n_fluxE * damp_factor;
+     
+    cout << "Expected neutron capture in gold foil: " << capture_rate << " +- " << capture_rateE << " /cm^2/s" << endl;
     cout << "Use the appropriate cross section values to estimate for other materials" << endl;
     cout << "======================================================" << endl;
 
@@ -191,7 +192,7 @@ int main (int argc, char** argv){
     l->DrawLatex(0.2,0.5,Form("Distance: %g m",distance));
     l->DrawLatex(0.1,0.3,"Estimated neutron flux:");
     l->DrawLatex(0.2,0.2,Form("Expected neutron flux: %g+-%g /cm^{2}/s",n_flux,n_fluxE));
-    l->DrawLatex(0.2,0.1,Form("Expected neutron capture in gold foil: %g+-%g /cm^{2}/s",n_flux*damp_factor,n_fluxE*damp_factor));
+    l->DrawLatex(0.2,0.1,Form("Expected neutron capture in gold foil: %g+-%g /cm^{2}/s",capture_rate,capture_rateE));
 
 
 
@@ -200,7 +201,7 @@ int main (int argc, char** argv){
     // 4. Simulate the gamma radiation that will be obtained
 
     TF1 *Nex = new TF1("Nex",N_ex,0.,120.,6);
-    Nex->SetParameters(t_0,N_0*alpha,1.0/((1.0-alpha)*tau_l),N_0*alpha*(1.0-TMath::Exp(-t_0/((1.0-alpha)*tau_l))),t_0,tau_l);
+    Nex->SetParameters(t_0,capture_rate*60.*60.*tau_l,tau_l,capture_rate*60.*60.*tau_l*(1.0-TMath::Exp(-t_0/tau_l)),t_0,tau_l);
 
     Nex->SetTitle("Expected number of excited ^{198}Au nuclei");
     Nex->Draw();
