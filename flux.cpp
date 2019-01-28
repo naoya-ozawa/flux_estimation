@@ -12,6 +12,28 @@
 #include <TRint.h>
 using namespace std;
 
+
+
+double N_ex(double *x, double *par){
+    double par0 = par[0];
+    double par1 = par[1];
+    double par2 = par[2];
+    double par3 = par[3];
+    double par4 = par[4];
+    double par5 = par[5];
+
+    double num = 0.;
+    if (x[0] <= par0){
+        num = par1*(1.0 - TMath::Exp(-par2*x[0]));
+    }else{
+        num = par3*TMath::Exp(-(x[0]-par4)/par5);
+    }
+    return num;
+}
+
+
+
+
 int main (int argc, char** argv){
 
     // Check input number
@@ -80,7 +102,7 @@ int main (int argc, char** argv){
         cns->SetPoint(i,cyric->GetX()[i],conversion*cyric->GetY()[i]);
         cns->SetPointError(i,0.,conversion*cyric->GetEY()[i]);
     }
-    cns->SetTitle(Form("CNS (%f p#muA)",I));
+    cns->SetTitle(Form("CNS (%g p#muA)",I));
     cns->SetMarkerColor(4);
     cns->SetMarkerStyle(22);
 
@@ -113,7 +135,7 @@ int main (int argc, char** argv){
     double Ce[10] = { 3.3168, 1.1516, 0.61878, 0.4052, 1.1613, 0.1066, 0.13974, 0.049063, 0.003403, 0.0005 };
 
     TGraphErrors *csdata = new TGraphErrors(10,E,C,Ee,Ce);
-    csdata->SetTitle("Cross section #sigma (E_n) of ^{197}Au(n,#gamma)^{198}Au; Neutron Energy E_n (MeV); Cross Section (b)");
+    csdata->SetTitle("Cross section #sigma (E_{n}) of ^{197}Au(n,#gamma)^{198}Au; Neutron Energy E_{n} (MeV); Cross Section (b)");
     csdata->Draw("AP*");    
 
     TF1 *csfit = new TF1("csfit","[0]*TMath::Exp([1]+[2]*x)*x**(-[3])");
@@ -126,10 +148,66 @@ int main (int argc, char** argv){
 
     cout << "======================================================" << endl;
     cout << "Extrapolated cross section at energy E_n = " << E_n << " eV: " << cross_section_b << " b" << endl;
+    cout << "Data samples (10 points) taken from EXFOR database" << endl;
+    cout << "======================================================" << endl;
+ 
 
 
+
+
+    c1->cd(3);
     // 3. Calculate the estimated neutron flux
+
+    double radiation = a0/(distance*distance); // Bq (ignore background)
+    double radiationE = a0E/(distance*distance); // Bq
+
+    cout << "Expected radiation = " << radiation << " +- " << radiationE << " Bq" << endl;
+
+    double cross_section = cross_section_b*TMath::Power(10.,-28); // m^2
+
+    double damp_factor = 1.0 - TMath::Exp(-cross_section*N_197Au*T);
+    double time_factor = (1.0 - TMath::Exp(-t_0/tau_l)) * TMath::Exp(-(t_1-t_0)/tau_l);
+
+    double alpha = radiation * tau_l*60.*60. / (N_0*damp_factor*time_factor);
+    double alphaE = radiationE * tau_l*60.*60. / (N_0*damp_factor*time_factor);
+
+    cout << "Parameter alpha = " << alpha << " +- " << alphaE << endl;
+
+    double n_flux = alpha*N_0/(tau_l*60.*60.*damp_factor);
+    double n_fluxE = alphaE*N_0/(tau_l*60.*60.*damp_factor);
+
+    cout << "Expected neutron flux: " << n_flux << " +- " << n_fluxE << " /cm^2/s" << endl;
+
+    cout << "Expected neutron capture in gold foil: " << n_flux*damp_factor << " +- " << n_fluxE*damp_factor << " /cm^2/s" << endl;
+    cout << "Use the appropriate cross section values to estimate for other materials" << endl;
+    cout << "======================================================" << endl;
+
+    TLatex *l = new TLatex();
+    l->SetTextAlign(12);
+    l->SetTextSize(0.05);
+    l->DrawLatex(0.1,0.8,"Calculation condition:");
+    l->DrawLatex(0.2,0.7,Form("Beam intensity: %g p#muA",I));
+    l->DrawLatex(0.2,0.6,Form("Neutron energy: %g eV",E_n));
+    l->DrawLatex(0.2,0.5,Form("Distance: %g m",distance));
+    l->DrawLatex(0.1,0.3,"Estimated neutron flux:");
+    l->DrawLatex(0.2,0.2,Form("Expected neutron flux: %g+-%g /cm^{2}/s",n_flux,n_fluxE));
+    l->DrawLatex(0.2,0.1,Form("Expected neutron capture in gold foil: %g+-%g /cm^{2}/s",n_flux*damp_factor,n_fluxE*damp_factor));
+
+
+
+
+    c1->cd(4);
     // 4. Simulate the gamma radiation that will be obtained
+
+    TF1 *Nex = new TF1("Nex",N_ex,0.,120.,6);
+    Nex->SetParameters(t_0,N_0*alpha,1.0/((1.0-alpha)*tau_l),N_0*alpha*(1.0-TMath::Exp(-t_0/((1.0-alpha)*tau_l))),t_0,tau_l);
+
+    Nex->SetTitle("Expected number of excited ^{198}Au nuclei");
+    Nex->Draw();
+    Nex->GetXaxis()->SetTitle("Time (h)");
+    Nex->GetYaxis()->SetTitle("N_{ex}(t)");
+
+
 
     c1->Update();
     c1->Modified();
