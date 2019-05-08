@@ -1,0 +1,134 @@
+\documentclass{article}
+
+\title{The evaluation of neutron radiation caused by the reaction $^{18}$O $+$ $^{197}$Au $\rightarrow$ $^{210}$Fr $+$ 5$n$} 
+\author{N. Ozawa}
+\date{\today}
+
+\begin{document}
+\maketitle
+
+\section{Monochromatic Neutrons}
+
+The reaction $^{197}$Au $(n,\gamma)$ $^{198}$Au can be used as a method of detecting neutron radiation. The daughter nucleus $^{198}$Au emits a $\gamma$ ray of energy around 411 keV at a half-life of $\tau_h = $2.7 days. This process could be formulated as
+\begin{eqnarray*}
+\frac{dN_{ex}(t)}{dt} & = & \left\{
+\begin{array}{lr}
+    A - \frac{1}{\tau_l} N_{ex}(t) & (0 < t < t_0) \\
+    - \frac{1}{\tau_l} N_{ex}(t) & (t_0 < t < t_1) \\
+\end{array}
+\right. ,
+\end{eqnarray*}
+where $N_{ex}(t)$ is the number of the $^{198}$Au in its excited state which will emit the $\gamma$ ray, $A$ is the occurence of the reaction $^{197}$Au $(n,\gamma)$ $^{198}$Au which is equivalent to the number of neutrons captured per unit time, and $\tau_l = \frac{\tau_h}{\ln2}$ is the lifetime of $^{198}$Au. It is assumed that the neutron irradiation starts at $t = 0$, the irradiation is stopped at $t = t_0$, and the $\gamma$ rays are measured at $t = t_1$. \\
+
+The reaction rate $A$ can be determined by the flux of the neutron beam $F_n (E_n)$, the solid angle of the gold film that is used for detection $\varepsilon$, the cross section $\sigma_{^{197}{\rm Au} (n,\gamma) ^{198}{\rm Au}} (E_n)$ of the neutron capture, the density $N_{^{197}{\rm Au}}$ of the $^{197}$Au inside the gold film, and the thickness $T$ of the film. The cross section data could be obtained from eg. the EXFOR database. \\
+
+First, the reaction rate at the surface ($D = 0$) of the film can be given by
+\begin{eqnarray*}
+\tilde{A}(D = 0) dD & = & F_n (E_n) \varepsilon \sigma_{^{197}{\rm Au}(n,\gamma)^{198}{\rm Au}}(E_n) N_{^{197}{\rm Au}}dD .
+\end{eqnarray*}
+Since the flux of the neutron beam is damped as it penetrates the film,
+\begin{eqnarray*}
+A & = & \int_{0}^{T} \tilde{A}(D) dD \\
+& = & \int_{0}^{T} F_n (E_n) \varepsilon e^{-\sigma_{^{197}{\rm Au}(n,\gamma)^{198}{\rm Au}}(E_n) N_{^{197}{\rm Au}}D} \sigma_{^{197}{\rm Au}(n,\gamma)^{198}{\rm Au}}(E_n) N_{^{197}{\rm Au}}dD \\
+& = & F_n (E_n) \varepsilon \left( 1 - e^{-\sigma_{^{197}{\rm Au}(n,\gamma)^{198}{\rm Au}}(E_n) N_{^{197}{\rm Au}} T} \right). \\
+\end{eqnarray*}
+
+Now, the equation will be solved for the neutron irradiation period $(0 < t < t_0)$. By reorganizing the terms,
+\begin{eqnarray*}
+\frac{dN_{ex}(t)}{dt} + \frac{1}{\tau_l} N_{ex}(t) & = & A.
+\end{eqnarray*}
+This equation can be solved by using the particular solution $u(t) = u_0 e^{-\frac{t}{\tau_l}}$ of $N_{ex}(t)$ which is the solution when the RHS is equated to 0. By redefining $u_0 = u_0(t)$ and reevaluating the equation using $N_{ex}(t) = u_0 (t) e^{-\frac{t}{\tau_l}}$,
+\begin{eqnarray*}
+\frac{du_0(t)}{dt} e^{-\frac{t}{\tau_l}} & - & \frac{1}{\tau_l} u_0 (t) e^{-\frac{t}{\tau_l}} + \frac{1}{\tau_l} u_0 (t) e^{-\frac{t}{\tau_l}} = A \\
+\frac{du_0(t)}{dt} & = & A e^{\frac{t}{\tau_l}} \\
+u_0 (t) & = & A\tau_l e^{\frac{t}{\tau_l}} + u_0(0) \\
+N_{ex}(t) & = & \left\{ A\tau_l e^{\frac{t}{\tau_l}} + u_0(0) \right\} e^{-\frac{t}{\tau_l}} .
+\end{eqnarray*}
+Since the neutron irradiation starts at $t = 0$, 
+\begin{eqnarray*}
+N_{ex}(t = 0) & = & A\tau_l + u_0(0) = 0 \\
+u_0(0) & = & -A\tau_l
+\end{eqnarray*}
+therefore,
+\begin{eqnarray*}
+N_{ex}(t) & = & A\tau_l \left( e^{\frac{t}{\tau_l}} - 1 \right) e^{-\frac{t}{\tau_l}} \\
+& = & A\tau_l \left( 1 - e^{-\frac{t}{\tau_l}} \right)
+\end{eqnarray*}
+is the solution during the neutron irradiation. Using the value at $t = t_0$, the time evolution of the system can be formulated as
+\begin{eqnarray*}
+N_{ex}(t) & = & \left\{
+\begin{array}{lr}
+    A\tau_l \left( 1 - e^{-\frac{t}{\tau_l}} \right) & (0 < t < t_0) \\
+    A\tau_l \left( 1 - e^{-\frac{t_0}{\tau_l}} \right) e^{-\frac{t-t_0}{\tau_l}} & (t_0 < t < t_1)
+\end{array} \right. . \\
+\end{eqnarray*}
+
+The data that was obtained at CYRIC was the strength of the $\gamma$ ray emmision from the excited $^{198}$Au nuclei at time $t = t_1$, which is equivalent to
+\begin{eqnarray*}
+\left. -\frac{dN_{ex}(t)}{dt} \right|_{t = t_1} & = & A \left( 1 - e^{-\frac{t_0}{\tau_l} } \right) e^{-\frac{t_1 - t_0}{\tau_l}} \\
+\end{eqnarray*}
+The CYRIC data was fitted with a function $f(r) = \frac{R}{r^2} + B$ with $R$ as the parameter corresponding to the radiation due to the neutrons, $r$ as the distance from the Au target, and $B$ as the parameter for the background radiation. The value $\frac{R}{r^2}$ gives the estimated neutron-caused $\gamma$ ray emission if the gold foil had been placed at distance $r$. When the initial beam is stronger (as in CNS) by the ratio $C$, this value is simply multiplied by the factor $C$.
+
+Thus the neutron capture rate can be calculated by
+\begin{eqnarray*}
+A & = & \frac{1}{\left( 1-e^{-\frac{t_0}{\tau_l}} \right) e^{-\frac{t_1-t_0}{\tau_l}}} \left( \left. -\frac{dN_{ex}(t)}{dt}\right|_{t=t_1} \right)
+\end{eqnarray*}
+and the flux of the neutron beam at the foil can be calculated by
+\begin{eqnarray*}
+F_n (E_n) \varepsilon & = & \frac{A}{1 - \exp{\left[ -\sigma_{^{197}{\rm Au}(n,\gamma)^{198}{\rm Au}}(E_n)N_{^{197}{\rm Au}}T \right]} } \\
+& = & \frac{1}{\left( 1-e^{-\sigma_{^{197}{\rm Au}(n,\gamma)^{198}{\rm Au}}(E_n)N_{^{197}{\rm Au}}T} \right) \left( 1-e^{-\frac{t_0}{\tau_l}} \right) e^{-\frac{t_1-t_0}{\tau_l}} } \left( \left. -\frac{dN_{ex}(t)}{dt}\right|_{t=t_1} \right)
+\end{eqnarray*}
+using the obtained values. By replacing the cross section and density with different materials, the neutron capture rate could be estimated for the desired material. \\
+
+The data at shorter distances or higher neutron energies are expected to contain more error. The former is because of the inaccurate fit of the radiation data at short distances, and the latter is because of inaccurate fit of cross sections at higher neutron energies. Otherwise, this method should work for lower-energy neutrons (below sub MeV) and long distances (more than a few meters). \\
+
+The code "flux.cpp" calculates the expected neutron flux during the beam irradiation by the method explained above. \\
+
+
+\section{Neutron Shielding}
+
+Commonly, fast neutrons could be gradually attenuated by placing a thick shield containing H, Fe, and C which have large neutron scattering cross sections. Thermal neutrons, on the other hand, can be captured by B or Cd. $^{10}$B is known to be an effective shield, since it also captures the emitted $\gamma$ ray. Thus, by using B-doped concrete, a neutron shield could be fabricated. One example of such a concrete contains the following ingredients.
+
+
+
+The absorption cross section of the concrete could be calculated by adding up all the contributions by the ingredients:
+\begin{eqnarray*}
+\sigma(E_n) & = & \sum_{{\rm ingredients}} P_{{\rm ingredient}} \sigma_{{\rm ingredient}}(E_n)
+\end{eqnarray*}
+where $P_{{\rm ingredient}}$ is the ratio of the ingredient included in the concrete. Each ingredient is made up of several stable or long-living isotopes, thus
+\begin{eqnarray*}
+\sigma_{{\rm ingredient}}(E_n) & = & \sum_{{\rm isotopes}} E_{{\rm isotope}} \sigma_{{\rm isotope}}(E_n)
+\end{eqnarray*}
+where $E_{{\rm isotope}}$ is the ratio of natural existence. Therefore, the cross section of the mixture could be calculated by
+\begin{eqnarray*}
+\sigma(E_n) & = & \sum_{{\rm ingredients}} \sum_{{\rm isotopes}} P_{{\rm ingredient}} E_{{\rm isotope}} \sigma_{{\rm ingredient}}(E_n) .
+\end{eqnarray*}
+
+
+\section{MB-Distributed Neutrons}
+
+In general, it is assumed that the neutrons flying out of the experimental region are thermalized in the course of their flight. Therefore, the neutrons observed at the gold target would not be monochromatic, but distributed following the Maxwell-Boltzmann distribution
+\begin{eqnarray*}
+f(E_n)_{E_0} & = & 2 \sqrt{\frac{E}{\pi}} \left( \frac{1}{kT} \right)^\frac{3}{2} e^{-\frac{E}{kT}} \\
+& = & 2 \sqrt{\frac{E}{\pi}} \left( \frac{1}{2E_0} \right)^\frac{3}{2} e^{-\frac{E}{2E_0}}
+\end{eqnarray*}
+where $E_0$ is the energy which the maximum number of neutrons have. Since this distribution is normalized, it can be said that the neuton flux has an energy dependence as
+\begin{eqnarray*}
+F_{n}(E_n) \varepsilon & = & F_0 f(E_n)_{E_0} \\
+\end{eqnarray*}
+and since $\sigma_{^{197}{\rm Au}(n,\gamma)^{198}{\rm Au}}(E_n) N_{^{197}{\rm Au}} T \ll 1$ generally holds, the rate $A$ could be approximated by
+\begin{eqnarray*}
+A & = & \int_{0}^{\infty} dE_n F_0 f(E_n)_{E_0} \sigma_{^{197}{\rm Au}(n,\gamma)^{198}{\rm Au}} \left( 1 - e^{-\sigma N T} \right) \\
+& \approx & F_0 N_{^{197}{\rm Au}}T \frac{2}{2E_0\sqrt{2\pi E_0}} \int_0^\infty dE_n \sqrt{E_n} e^{-\frac{E_n}{2E_0}} \sigma_{^{197}{\rm Au}(n,\gamma){^{198}{\rm Au}}} (E_n) .
+\end{eqnarray*}
+The neutron flux distribution is calculated in "mbflux.cpp" with this method.
+
+
+
+\section{The Distance-Dependence of the Detection Efficiency}
+The irradiation of neutrons on the Au film target has been modeled above as $f(r) = \frac{R}{r^2} + B$ with $R$ as the neutron irradiation factor, $B$ as the background irradiation factor, and $r$ as the distance of the film from the Au target of the surface ionizer. This model is not accurate in the short-distance range, since $f(r)$ obviously diverges as $r$ approaches 0. Thus there should be some function $D(r)$ such that $f(r) = RD(r) + B$ accurately models the neutron irradiation. Here, we actually simulate the neutron irradiation on the Au film and try to model the form of $D(r)$ as accurately as possible.
+
+
+
+
+\end{document}
