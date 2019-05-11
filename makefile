@@ -3,3 +3,6 @@ all:	flux.cpp
 
 mbflux:	mbflux.cpp
 	`root-config --cxx --cflags` -o mbflux mbflux.cpp `root-config --glibs`
+
+rdep:	distance_dependence.cpp
+	`root-config --cxx --cflags` -o rdep distance_dependence.cpp `root-config --glibs`
