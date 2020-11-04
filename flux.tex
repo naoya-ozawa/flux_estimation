@@ -87,22 +87,24 @@ The code "flux.cpp" calculates the expected neutron flux during the beam irradia
 
 \section{Neutron Shielding}
 
-Commonly, fast neutrons could be gradually attenuated by placing a thick shield containing H, Fe, and C which have large neutron scattering cross sections. Thermal neutrons, on the other hand, can be captured by B or Cd. $^{10}$B is known to be an effective shield, since it also captures the emitted $\gamma$ ray. Thus, by using B-doped concrete, a neutron shield could be fabricated. One example of such a concrete contains the following ingredients.
+Commonly, fast neutrons could be gradually attenuated by placing a thick shield containing H, Fe, and C which have large neutron scattering cross sections. Thermal neutrons, on the other hand, can be captured by B or Cd. $^{10}$B is known to be an effective isotope, since it also captures the emitted $\gamma$ ray. ${}^{6}{\rm Li}$ is another favored isotope, since the secondary $\gamma$ emission is rare. Gd has a high capture cross section in the thermal regime (0.0025 eV).
 
+Following the previously obtained formulation, the ratio of the neutron flux after the shield to the incoming flux is
+$$
+    S(E_n) = 1 - \frac{A}{F_n(E_n)\varepsilon} = \exp{\left[ -\sigma_{\rm isotope}(E_n) N_{\rm isotope} T \right]}
+$$
+where $\sigma_{\rm isotope}(E_n)$ is the neutron capture cross section of the particular isotope, and $N_{isotope}$ is the number density of the isotope within the shield material,
+which can be approximated by 
+\begin{eqnarray*}
+N_{isotope} & = & P_{\rm ingredient} \rho_{\rm ingredient} E_{\rm isotope} \frac{N_A}{A_{\rm isotope}} ,
+\end{eqnarray*}
+where $P_{\rm ingredient}$ is the percentage of the ingredient (eg. Boron) included in the material,
+$\rho_{\rm ingredient}$ is the mass density of the ingredient (eg. $2.08~{\rm g/cm}^3$ for B),
+$E_{\rm isotope}$ is the natural abundance of the particular isotope (eg. 20\% for ${}^{10}{\rm B}$),
+$N_A$ is the Avogadro constant, and $A_{\rm isotope}$ is the mass number of the isotope.
 
+The value of $S(E_n)$ will serve as the "shielding factor" for the chosen material and thickness.
 
-The absorption cross section of the concrete could be calculated by adding up all the contributions by the ingredients:
-\begin{eqnarray*}
-\sigma(E_n) & = & \sum_{{\rm ingredients}} P_{{\rm ingredient}} \sigma_{{\rm ingredient}}(E_n)
-\end{eqnarray*}
-where $P_{{\rm ingredient}}$ is the ratio of the ingredient included in the concrete. Each ingredient is made up of several stable or long-living isotopes, thus
-\begin{eqnarray*}
-\sigma_{{\rm ingredient}}(E_n) & = & \sum_{{\rm isotopes}} E_{{\rm isotope}} \sigma_{{\rm isotope}}(E_n)
-\end{eqnarray*}
-where $E_{{\rm isotope}}$ is the ratio of natural existence. Therefore, the cross section of the mixture could be calculated by
-\begin{eqnarray*}
-\sigma(E_n) & = & \sum_{{\rm ingredients}} \sum_{{\rm isotopes}} P_{{\rm ingredient}} E_{{\rm isotope}} \sigma_{{\rm ingredient}}(E_n) .
-\end{eqnarray*}
 
 
 \section{MB-Distributed Neutrons}
