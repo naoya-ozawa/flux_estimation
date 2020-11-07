@@ -6,3 +6,6 @@ mbflux:	mbflux.cpp
 
 rdep:	distance_dependence.cpp
 	`root-config --cxx --cflags` -o rdep distance_dependence.cpp `root-config --glibs`
+
+material:	material_thickness.cpp
+	`root-config --cxx --cflags` -o material material_thickness.cpp `root-config --glibs`
