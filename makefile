@@ -9,3 +9,6 @@ rdep:	distance_dependence.cpp
 
 material:	material_thickness.cpp
 	`root-config --cxx --cflags` -o material material_thickness.cpp `root-config --glibs`
+
+n_edist:	n_edist.cpp
+	`root-config --cxx --cflags` -o n_edist n_edist.cpp `root-config --glibs`

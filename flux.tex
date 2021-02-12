@@ -1,4 +1,5 @@
 \documentclass{article}
+\usepackage{url}
 
 \title{The evaluation of neutron radiation caused by the reaction $^{18}$O $+$ $^{197}$Au $\rightarrow$ $^{210}$Fr $+$ 5$n$} 
 \author{N. Ozawa}
@@ -130,7 +131,25 @@ The neutron flux distribution is calculated in "mbflux.cpp" with this method.
 \section{The Distance-Dependence of the Detection Efficiency}
 The irradiation of neutrons on the Au film target has been modeled above as $f(r) = \frac{R}{r^2} + B$ with $R$ as the neutron irradiation factor, $B$ as the background irradiation factor, and $r$ as the distance of the film from the Au target of the surface ionizer. This model is not accurate in the short-distance range, since $f(r)$ obviously diverges as $r$ approaches 0. Thus there should be some function $D(r)$ such that $f(r) = RD(r) + B$ accurately models the neutron irradiation. Here, we actually simulate the neutron irradiation on the Au film and try to model the form of $D(r)$ as accurately as possible.
 
+\section{Energy distribution of the evaporated neutrons}
 
-
+In a fusion-evaporation reaction, the formed compound nucleus may decay through emission of light particles or gamma rays.
+Based on the statistical model, the probability that a neutron of kinetic energy $e$ passes through the potential barrier is given by\footnote{\url{http://nrv.jinr.ru/nrv/webnrv/stat_model/description/Description.pdf}}
+$$
+T_l(e) = P(e) \exp{\left[ -2\sqrt{\frac{2\mu e}{\hbar^2}} \left\{ \rho^2 -R^2 + \rho\log{\left( \frac{\rho+\sqrt{\rho^2-R^2}}{R} \right)} \right\} \right]}
+$$
+where
+\begin{eqnarray*}
+    P(e) & = & \frac{4\sqrt{\frac{e}{e+40}}}{\left[1+\sqrt{\frac{e}{e+40}}\right]^2} \\
+    \rho & = & \sqrt{\frac{\hbar^2l(l+1)}{2\mu e}} \\
+    R & = & r_0A^\frac{1}{3} + 2~{\rm fm} \\
+    r_0 & = & 1.2~{\rm fm} \\
+    l & : & {\rm orbital}~{\rm angular}~{\rm momentum}~{\rm of}~{\rm the}~{\rm compound}~{\rm nucleus} \\
+    \mu & : & {\rm reduced}~{\rm mass}~{\rm of}~{\rm the}~{\rm neutron} = \frac{Mm_n}{M + m_n}.
+\end{eqnarray*}
+The expected neutron energy distribution is then given by
+$$
+\sum_{l=0}^{\infty} T_l(e).
+$$
 
 \end{document}
